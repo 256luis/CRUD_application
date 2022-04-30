@@ -1,0 +1,12 @@
+Setting up the database
+1. download mysql server & mysql workbench in installer.
+2. Set-up root account in mysql server config (during download)
+3. Set root password (remember password)
+4. Open mysql workbench
+5. At the top, click 'database' tab -> click 'connect to database' -> click 'ok'
+6. Enter root password
+7. At the top, click 'Server' tab -> click 'Data import'
+8. Select 'import from Self-contained file'
+9. select sql file (yung inventory_db.sql)
+10. click 'Import Progress' tab
+11. Click 'start import'
