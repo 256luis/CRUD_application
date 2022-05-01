@@ -8,6 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
+    datas=[('*.png', 'icon.ico')],
     hiddenimports=['babel.numbers'],
     hookspath=[],
     hooksconfig={},
@@ -18,13 +19,6 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
-
-for d in a.datas:
-    if 'pyconfig' in d[0]:
-        a.datas.remove(d)
-        break
-		
-a.datas += [('*.png', 'icon.ico')]
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
