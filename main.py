@@ -24,6 +24,13 @@ def clear():
     # notify user
     messagebox.showinfo("Form notification", "Form Cleared")
 
+# path function to eliminate exe dependencies
+def get_path(filename):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, filename)
+    else:
+        return filename
+        
 # create the main window
 rootWidth = 1151
 rootHeight = 543
@@ -33,7 +40,7 @@ root.title("Inventory Management")
 root.resizable(width=False, height=False)
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.withdraw()
-root.iconbitmap("icon.ico")
+root.iconbitmap(get_path("icon.ico"))
 
 # create the frames
 mainFrame = Frame(root, bd=10, relief=RIDGE, bg="#129793")
