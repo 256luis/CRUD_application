@@ -9,6 +9,7 @@ from create import create
 from read import read
 from update import update
 from delete import delete
+from display import displayData
 
 # exit function
 def on_closing():
@@ -22,7 +23,7 @@ def clear():
     
     # notify user
     messagebox.showinfo("Form notification", "Form Cleared")
-   
+
 # create the main window
 rootWidth = 1151
 rootHeight = 543
@@ -89,7 +90,7 @@ buttonFrame.grid(column=0, row=dataCount, columnspan=4, sticky=W)
 
 # create buttons
 addButtonImage = PhotoImage(file="add.png")
-addButton = Button(buttonFrame, text="Add", bd=4, width=80, height=80, image=addButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: create(cursor))
+addButton = Button(buttonFrame, text="Add", bd=4, width=80, height=80, image=addButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: create(db, cursor, textFields, datePickers, records))
 addButton.pack(side="left", padx=(0,7), pady=(5,0))
 
 updateButtonImage = PhotoImage(file="update.png")
@@ -169,6 +170,9 @@ root.deiconify()
 # make connection to database
 db = MySQLdb.connect("localhost", "root", "Syntax01001111", "inventory_db")
 cursor = db.cursor()
+
+# show data on database
+displayData(cursor, records)
 
 # loop
 root.mainloop()
