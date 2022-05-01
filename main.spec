@@ -8,7 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('*.png', 'icon.ico')],
+    datas=[('C:\\Users\\killa\\Desktop\\CRUD_application\\*.png', '.'), ('C:\\Users\\killa\\Desktop\\CRUD_application\\icon.ico', '.')],
     hiddenimports=['babel.numbers'],
     hookspath=[],
     hooksconfig={},
