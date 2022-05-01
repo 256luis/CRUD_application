@@ -25,11 +25,14 @@ def clear():
     messagebox.showinfo("Form notification", "Form Cleared")
 
 # path function to eliminate exe dependencies
-def get_path(filename):
-    if hasattr(sys, "_MEIPASS"):
-        return os.path.join(sys._MEIPASS, filename)
-    else:
-        return filename
+def get_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
         
 # create the main window
 rootWidth = 1151
