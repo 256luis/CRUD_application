@@ -48,11 +48,11 @@ def create(db, cursor, textFields, datePickers, records):
             messagebox.showerror("Error", "Incorrect price")  
             errorCount = errorCount + 1
     else:  
-        # notify user
-        messagebox.showinfo("Form notification", "Record successfully added")
-        
         # commit changes
         db.commit()
         
         # show data on table
         displayData(cursor, records)
+        
+        # notify user
+        messagebox.showinfo("Form notification", "Record successfully added")

@@ -94,11 +94,11 @@ addButton = Button(buttonFrame, text="Add", bd=4, width=80, height=80, image=add
 addButton.pack(side="left", padx=(0,7), pady=(5,0))
 
 updateButtonImage = PhotoImage(file="update.png")
-updateButton = Button(buttonFrame, text="Update", bd=4, width=80, height=80, image=updateButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: update(cursor))
+updateButton = Button(buttonFrame, text="Update", bd=4, width=80, height=80, image=updateButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: update(db, cursor, textFields, datePickers, records))
 updateButton.pack(side="left", padx=(0,7), pady=(5,0))
 
 deleteButtonImage = PhotoImage(file="delete.png")
-deleteButton = Button(buttonFrame, text="Delete", bd=4, width=80, height=80, image=deleteButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: delete(cursor))
+deleteButton = Button(buttonFrame, text="Delete", bd=4, width=80, height=80, image=deleteButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: delete(db, cursor, records))
 deleteButton.pack(side="left", padx=(0,7), pady=(5,0))
 
 clearButtonImage = PhotoImage(file="clear.png")
@@ -116,11 +116,11 @@ search_bar_lbl.grid(column=0, row=0, pady=5)
 search_bar = Entry(tableFrame, bd=5, relief=SUNKEN, width=33, font=("Helvetica", 15))
 search_bar.grid(column=1, row=0, pady=5)
 
-filter_cbox = ttk.Combobox(tableFrame, font=("Helvetica", 11), state="readonly", width=10)
+filter_cbox = ttk.Combobox(tableFrame, font=("Helvetica", 11), state="readonly", width=15)
 filter_cbox["values"] = ("", "Branch ID", "Item Code", "Batch Code", "Price", "Manufacture Date", "Preparation Date", "Expiration Date")
 filter_cbox.current(0)
 filter_cbox.grid(column=2, row=0, columnspan=2)
-filter_cbox.bind("<<ComboboxSelected>>", lambda event: read(cursor))
+filter_cbox.bind("<<ComboboxSelected>>", lambda event: read(cursor, records))
 
 # create table
 scroll_y = Scrollbar(tableFrame, orient=VERTICAL)
