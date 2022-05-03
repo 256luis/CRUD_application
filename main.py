@@ -7,7 +7,7 @@ from tkinter.simpledialog import askstring
 
 from create import create
 from read import read
-from update import update
+from update import update, on_click
 from delete import delete
 from display import displayData
 
@@ -168,11 +168,14 @@ root.deiconify()
 #password = askstring("Authenticate", "Enter the root password")
 
 # make connection to database
-db = MySQLdb.connect("localhost", "root", "Syntax01001111", "inventory_db")
+db = MySQLdb.connect("localhost", "root", "password", "inventory_db")
 cursor = db.cursor()
 
 # show data on database
 displayData(cursor, records)
+
+records.bind('<ButtonRelease-1>', lambda event: on_click(event, records=records, textFields=textFields, datePickers=datePickers, dataCount=dataCount))
+
 
 # loop
 root.mainloop()
