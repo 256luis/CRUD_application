@@ -9,8 +9,6 @@ from display import displayData
 from datetime import datetime
 from time import mktime
 
-""" palitan mo muna root password argument sa main file para makaconnect sa db"""
-
 data = []
 
 def on_click(event, records, textFields, datePickers, dataCount):
@@ -18,8 +16,7 @@ def on_click(event, records, textFields, datePickers, dataCount):
 
     global data
     data = records.item(record, 'values')
-    print(data)
-
+    
     try:    
         for i in range(4):
             textFields[i].delete(0, END)
@@ -33,7 +30,13 @@ def on_click(event, records, textFields, datePickers, dataCount):
         pass
     
 def update(db, cursor, textFields, datePickers, records):
-
+    # no selected record, return with error message
+    try:
+        records.item(records.focus(),"values")[0]
+    except:
+        messagebox.showerror("Error", "There is no selected row")  
+        return
+        
     branchID = textFields[0].get()
     itemCode = textFields[1].get()
     batchCode = textFields[2].get() if textFields[2].get() != "" else 0
@@ -43,8 +46,11 @@ def update(db, cursor, textFields, datePickers, records):
     exprDate = datePickers[2].get_date()
     pkgNum = data[0]
 
-    print(pkgNum)
-
+    # no data was modified, return
+    rowValues = records.item(records.focus(),"values")
+    if branchID == rowValues[1] and itemCode == rowValues[2] and batchCode == rowValues[3] and price == rowValues[4] and str(manufacDate) == rowValues[5] and str(prepDate) == rowValues[6] and str(exprDate) == rowValues[7]:
+        return
+        
     errorCount = 0
 
     try:
@@ -97,5 +103,9 @@ def update(db, cursor, textFields, datePickers, records):
         # show data on table
         displayData(cursor, records)
         
+        # clear form data
+        for i in range(4):
+            textFields[i].delete(0, END)        
+            
         # notify user
         messagebox.showinfo("Form notification", "Record successfully updated")
