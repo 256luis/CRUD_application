@@ -168,7 +168,7 @@ root.deiconify()
 #password = askstring("Authenticate", "Enter the root password")
 
 # make connection to database
-db = MySQLdb.connect("localhost", "root", "Syntax01001111", "inventory_db")
+db = MySQLdb.connect("localhost", "root", "cailyn", "inventory_db")
 cursor = db.cursor()
 
 # show data on database
