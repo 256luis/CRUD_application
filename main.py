@@ -182,15 +182,7 @@ root.geometry(f"{rootWidth}x{rootHeight}+{int(sw/2-rootWidth/2)}+{int(sh/2-rootH
 root.deiconify()
 
 # ask for user (root) password
-<<<<<<< HEAD
-#password = askstring("Authenticate", "Enter the root password")
-
-# make connection to database
-db = MySQLdb.connect("localhost", "root", "Syntax01001111", "inventory_db")
-cursor = db.cursor()
-=======
 password = ""
->>>>>>> table
 
 while password == "":
     password = askstring("Authenticate", "Enter the root password:", parent=root, show="*")
