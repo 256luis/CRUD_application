@@ -107,10 +107,6 @@ def update(db, cursor, textFields, datePickers, records):
         
         # show data on table
         displayData(cursor, records)
-        
-        # clear form data
-        for i in range(4):
-            textFields[i].delete(0, END)        
-            
+
         # notify user
         messagebox.showinfo("Form notification", "Record successfully updated")
