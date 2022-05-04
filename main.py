@@ -28,6 +28,16 @@ def clear():
     # notify user
     messagebox.showinfo("Form notification", "Form Cleared")
 
+# path function to eliminate exe dependencies
+def get_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+        
 # create the main window
 rootWidth = 1151
 rootHeight = 543
@@ -37,7 +47,8 @@ root.title("Inventory Management")
 root.resizable(width=False, height=False)
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.withdraw()
-root.iconbitmap(default="icon.ico")
+root.iconbitmap(default=get_path("icon.ico"))
+
 
 # create the frames
 mainFrame = Frame(root, bd=10, relief=RIDGE, bg="#129793")
@@ -93,7 +104,7 @@ buttonFrame = Frame(dataFrame, bd=10,relief=FLAT, bg="#9BD7D5")
 buttonFrame.grid(column=0, row=dataCount, columnspan=4, sticky=W)
 
 # create buttons
-addButtonImage = PhotoImage(file="add.png")
+addButtonImage = PhotoImage(file=get_path("add.png"))
 addButton = Button(buttonFrame, text="Add", bd=4, width=80, height=80, image=addButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: create(db, cursor, textFields, datePickers, records))
 addButton.pack(side="left", padx=(0,7), pady=(5,0))
 
@@ -105,14 +116,13 @@ deleteButtonImage = PhotoImage(file="delete.png")
 deleteButton = Button(buttonFrame, text="Delete", bd=4, width=80, height=80, image=deleteButtonImage, compound=TOP, font=("Garamond", 15), command=lambda: delete(db, cursor, records))
 deleteButton.pack(side="left", padx=(0,7), pady=(5,0))
 
-clearButtonImage = PhotoImage(file="clear.png")
+clearButtonImage = PhotoImage(file=get_path("clear.png"))
 clearButton = Button(buttonFrame, text="Clear", bd=4, width=80, height=80, image=clearButtonImage, compound=TOP, font=("Garamond", 15), command=clear)
 clearButton.pack(side="left", pady=(5,0))
 
-
 # create search bar & filter combo box
 search_bar_lbl = Label(tableFrame, text="Search ", font=("Times New Roman", 20), bg="#9BD7D5")
-img = PhotoImage(file="search.png")
+img = PhotoImage(file=get_path("search.png"))
 search_bar_lbl["compound"]= RIGHT
 search_bar_lbl["image"] = img
 search_bar_lbl.grid(column=0, row=0, pady=5)
