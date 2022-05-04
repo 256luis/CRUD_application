@@ -1,4 +1,5 @@
 from display import displayData
+<<<<<<< HEAD
 import tkinter
 
 def read(cursor, records, filter_cbox, search_bar):
@@ -78,3 +79,8 @@ def read(cursor, records, filter_cbox, search_bar):
                     records.insert("", tkinter.END, values=row)
     except: # catch exception
         pass
+=======
+# tip lng, macacall itong function everytime may sinelect na option sa filter combobox
+def read(cursor, records):
+    pass
+>>>>>>> table
