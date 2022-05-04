@@ -1,42 +1,80 @@
-#read
 from display import displayData
-# tip lng, macacall itong function everytime may sinelect na option sa filter combobox
-def func_read(cursor):
-    connection = displayData.getconnection()
-    cursor = cnt.execute()
+import tkinter
 
-    cursor.execute('Select * from' )#data()#
-    #placeholder lng
-    # para mapadali buhay mo, check mo code sa displayData function kung pano mag clear at insert ng rows sa table('records') ng app
-    for row in cursor:
-        print('row - %r' % (row,))
-#filterbox
-import tkninter as tk
-from tkinter import ttk
-
-window = tk.Tk() 
-window.title('Combobox') 
-window.geometry('500x250') 
-
-ttk.Label(window, text = "Branch ID", 
-          font = ("Times New Roman", 12)).grid(column = 0, 
-          row = 5, padx = 5, pady = 25)
-          
-n = tk.StringVar() 
-ID = ttk.Combobox(window, width = 20, textvariable = n) 
-
-ID['values'] = (cursor) 
-  
-country.grid(column = 1, row = 5) 
-country.current()
-
-window.mainloop() 
-
-#search box
-pattern = simpledialog.askstring('Search', 'What to search?')
-
-results = []
-for line in data.split('\n'):
-    if pattern in line:
-        results.append(line)
-results = "".join(results)
+def read(cursor, records, filter_cbox, search_bar):
+    try:
+        match filter_cbox.get():
+            case "":
+                displayData(cursor, records)
+            case "Branch ID":
+                cursor.execute(f"select * from Package where brnch_id = {search_bar.get()}")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Item Code":
+                cursor.execute(f"select * from Package where item_code = {search_bar.get()}")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Batch Code":
+                cursor.execute(f"select * from Package where batch_code = {search_bar.get()}")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Price":
+                cursor.execute(f"select * from Package where pckg_price LIKE {search_bar.get()}")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Manufacture Date":
+                cursor.execute(f"select * from Package where manufac_date = '{search_bar.get()}'")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Preparation Date":
+                cursor.execute(f"select * from Package where prep_date = '{search_bar.get()}''")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+            case "Expiration Date":
+                cursor.execute(f"select * from Package where expr_date = '{search_bar.get()}'")
+                rows = cursor.fetchall()
+                # delete current data in table
+                for item in records.get_children():
+                    records.delete(item)
+        
+                # show all data
+                for row in rows:
+                    records.insert("", tkinter.END, values=row)
+    except: # catch exception
+        pass

@@ -115,12 +115,13 @@ search_bar_lbl.grid(column=0, row=0, pady=5)
 
 search_bar = Entry(tableFrame, bd=5, relief=SUNKEN, width=33, font=("Helvetica", 15))
 search_bar.grid(column=1, row=0, pady=5)
+search_bar.bind("<KeyRelease>", lambda event: read(cursor, records, filter_cbox, search_bar))
 
 filter_cbox = ttk.Combobox(tableFrame, font=("Helvetica", 11), state="readonly", width=15)
 filter_cbox["values"] = ("", "Branch ID", "Item Code", "Batch Code", "Price", "Manufacture Date", "Preparation Date", "Expiration Date")
 filter_cbox.current(0)
 filter_cbox.grid(column=2, row=0, columnspan=2)
-filter_cbox.bind("<<ComboboxSelected>>", lambda event: read(cursor, records))
+filter_cbox.bind("<<ComboboxSelected>>", lambda event: read(cursor, records, filter_cbox, search_bar))
 
 # create table
 scroll_y = Scrollbar(tableFrame, orient=VERTICAL)
@@ -168,7 +169,7 @@ root.deiconify()
 #password = askstring("Authenticate", "Enter the root password")
 
 # make connection to database
-db = MySQLdb.connect("localhost", "root", "password", "inventory_db")
+db = MySQLdb.connect("localhost", "root", "Syntax01001111", "inventory_db")
 cursor = db.cursor()
 
 # show data on database
