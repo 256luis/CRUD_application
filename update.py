@@ -4,30 +4,35 @@ from tkinter import messagebox, END
 from MySQLdb import DataError
 from MySQLdb import IntegrityError
 from MySQLdb import OperationalError
-from display import displayData
+from display import displayData, modifiedDisplayData
 
 from datetime import datetime
 from time import mktime
 
 data = []
 
-def on_click(event, records, textFields, datePickers, dataCount):
-    record = records.focus()
-
-    global data
-    data = records.item(record, 'values')
-    
-    try:    
-        for i in range(4):
-            textFields[i].delete(0, END)
-            textFields[i].insert(0, data[i+1])
+def on_click(event, db, cursor, records, textFields, datePickers, dataCount):
+    if records.identify("region", event.x, event.y) == "heading": # a heading was clicked
+        headingID = records.identify_column(event.x)
+        modifiedDisplayData(cursor, headingID, records)
         
-        for i in range(3):
-            convertedDate = datetime.fromtimestamp(mktime(strptime(data[i+5], '%Y-%m-%d')))
-            datePickers[i].set_date(convertedDate)
+    else: # a row was clicked
+        record = records.focus()
 
-    except:
-        pass
+        global data
+        data = records.item(record, 'values')
+        
+        try:    
+            for i in range(4):
+                textFields[i].delete(0, END)
+                textFields[i].insert(0, data[i+1])
+            
+            for i in range(3):
+                convertedDate = datetime.fromtimestamp(mktime(strptime(data[i+5], '%Y-%m-%d')))
+                datePickers[i].set_date(convertedDate)
+
+        except:
+            pass
     
 def update(db, cursor, textFields, datePickers, records):
     # no selected record, return with error message

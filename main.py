@@ -21,6 +21,10 @@ def clear():
     for i in range(4):
         textFields[i].delete(0, END)
     
+    # deselect any selected rows
+    if len(records.selection()) > 0:
+        records.selection_remove(records.selection()[0])
+    
     # notify user
     messagebox.showinfo("Form notification", "Form Cleared")
 
@@ -33,7 +37,7 @@ root.title("Inventory Management")
 root.resizable(width=False, height=False)
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.withdraw()
-root.iconbitmap("icon.ico")
+root.iconbitmap(default="icon.ico")
 
 # create the frames
 mainFrame = Frame(root, bd=10, relief=RIDGE, bg="#129793")
@@ -129,7 +133,16 @@ records = ttk.Treeview(tableFrame, height=16, columns=("pckge_no", "brnch_id", "
 scroll_y.configure(command=records.yview)
 scroll_y.grid(column=4, sticky=NS, padx=(0,5), pady=(5,0))
 
-# headings
+# stylize the table
+style = ttk.Style()
+style.theme_use("default")
+style.configure("Treeview", background="#ffb469", fieldbackground="#fed8b1")
+style.configure("Treeview.Heading", background="#26428b", foreground="white")
+
+# create color tags for the table rows
+records.tag_configure("odd", background="#ffb469")
+records.tag_configure("even", background="#fed8b1")
+
 records.heading("pckge_no", text="Package No")
 records.heading("brnch_id", text="Branch ID")
 records.heading("item_code", text="Item Code")
@@ -148,6 +161,9 @@ records.column("manufac_date", width=103)
 records.column("prep_date", width=96)
 records.column("expr_date", width=88)
 
+# table binds
+records.bind('<ButtonRelease-1>', lambda event: on_click(event, db, cursor, records=records, textFields=textFields, datePickers=datePickers, dataCount=dataCount))
+
 # add table to frame
 records.grid(column=0, row=1, columnspan=4, padx=(5,0), pady=(5,0))
 
@@ -165,17 +181,26 @@ root.geometry(f"{rootWidth}x{rootHeight}+{int(sw/2-rootWidth/2)}+{int(sh/2-rootH
 root.deiconify()
 
 # ask for user (root) password
-#password = askstring("Authenticate", "Enter the root password")
+password = ""
 
-# make connection to database
-db = MySQLdb.connect("localhost", "root", "password", "inventory_db")
-cursor = db.cursor()
+while password == "":
+    password = askstring("Authenticate", "Enter the root password:", parent=root, show="*")
+    
+    # user pressed the 'cancel' button: exit program
+    if password == None:
+        root.destroy()
+        break
+        
+    try:
+        db = MySQLdb.connect("localhost", "root", password, "inventory_db") # make connection to database
+    except MySQLdb.Error as e:  # wrong password
+        password = ""
+        messagebox.showerror("Error", "Incorrect root password")
+else: # connection complete
+    cursor = db.cursor()
 
-# show data on database
-displayData(cursor, records)
+    # show data on database
+    displayData(cursor, records)
 
-records.bind('<ButtonRelease-1>', lambda event: on_click(event, records=records, textFields=textFields, datePickers=datePickers, dataCount=dataCount))
-
-
-# loop
-root.mainloop()
+    # loop
+    root.mainloop()
